@@ -17,8 +17,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, name, price, image, onAdd
   const handleAddToCart = () => {
     onAddToCart();
     toast({
-      title: "Added to cart",
-      description: `${name} has been added to your cart`,
+      title: "Добавлено в корзину",
+      description: `${name} добавлен в вашу корзину`,
     });
   };
 
@@ -33,13 +33,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, name, price, image, onAdd
       </div>
       <div className="p-4">
         <h3 className="text-lg font-medium text-gray-900">{name}</h3>
-        <p className="text-primary mt-1">${price.toFixed(2)}</p>
+        <p className="text-primary mt-1">{(price * 90).toFixed(0)} ₽</p>
         <Button
           onClick={handleAddToCart}
           className="w-full mt-4 bg-primary hover:bg-primary-hover text-white flex items-center justify-center gap-2"
         >
           <ShoppingCart className="w-4 h-4" />
-          Add to Cart
+          В корзину
         </Button>
       </div>
     </div>

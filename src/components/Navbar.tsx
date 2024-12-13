@@ -14,16 +14,16 @@ const Navbar: React.FC<NavbarProps> = ({ cartItemsCount }) => {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-8">
             <Link to="/" className="text-xl font-semibold text-primary">
-              StyleStore
+              СтильМаркет
             </Link>
             <div className="hidden md:flex items-center gap-4">
               <Link to="/" className="text-gray-600 hover:text-primary flex items-center gap-2">
                 <Home className="w-4 h-4" />
-                Home
+                Главная
               </Link>
               <Link to="/catalog" className="text-gray-600 hover:text-primary flex items-center gap-2">
                 <Grid className="w-4 h-4" />
-                Catalog
+                Каталог
               </Link>
             </div>
           </div>
@@ -39,7 +39,7 @@ const Navbar: React.FC<NavbarProps> = ({ cartItemsCount }) => {
               </Button>
             </Link>
             <Button variant="outline" className="hidden md:inline-flex">
-              Sign In
+              Войти
             </Button>
           </div>
         </div>
