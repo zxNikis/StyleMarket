@@ -16,12 +16,13 @@ import {
 const Login = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     
     // Простая валидация
     if (!email || !password) {
@@ -30,91 +31,108 @@ const Login = () => {
         description: "Пожалуйста, заполните все поля",
         variant: "destructive"
       });
+      setIsLoading(false);
       return;
     }
 
     // Имитация авторизации
-    if (email === "user@example.com" && password === "password") {
-      setIsLoggedIn(true);
-      toast({
-        title: "Успешный вход",
-        description: "Добро пожаловать в СтильМаркет!",
-      });
-      navigate('/');
-    } else {
-      toast({
-        title: "Ошибка входа",
-        description: "Неверный email или пароль",
-        variant: "destructive"
-      });
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      if (email === "user@example.com" && password === "password") {
+        toast({
+          title: "Успешный вход",
+          description: "Добро пожаловать в СтильМаркет!",
+        });
+        navigate('/');
+      } else {
+        toast({
+          title: "Ошибка входа",
+          description: "Неверный email или пароль",
+          variant: "destructive"
+        });
+      }
+    } finally {
+      setIsLoading(false);
     }
-  };
-
-  const handleRegister = () => {
-    navigate('/register');
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar cartItemsCount={0} isLoggedIn={isLoggedIn} />
-      <div className="container mx-auto px-4 py-8 flex justify-center items-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <User className="w-6 h-6" />
-              Вход в аккаунт
-            </CardTitle>
-            <CardDescription>
-              Введите ваши данные для входа
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                  Email
-                </label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  placeholder="example@mail.ru"
-                />
-              </div>
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                  Пароль
-                </label>
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  placeholder="••••••••"
-                />
-              </div>
-              <Button type="submit" className="w-full" variant="default">
-                <LogIn className="mr-2 h-4 w-4" /> Войти
-              </Button>
-            </form>
-            <div className="mt-4 text-center">
-              <p className="text-sm text-gray-600">
-                Нет аккаунта?{' '}
+      <Navbar cartItemsCount={0} isLoggedIn={false} />
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-md mx-auto">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <User className="w-6 h-6" />
+                Вход в аккаунт
+              </CardTitle>
+              <CardDescription>
+                Введите ваши данные для входа в систему
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="space-y-2">
+                  <label htmlFor="email" className="text-sm font-medium">
+                    Email
+                  </label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="example@mail.ru"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={isLoading}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="password" className="text-sm font-medium">
+                    Пароль
+                  </label>
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    disabled={isLoading}
+                  />
+                </div>
                 <Button 
-                  variant="link" 
-                  size="sm" 
-                  onClick={handleRegister}
-                  className="text-primary"
+                  type="submit" 
+                  className="w-full" 
+                  disabled={isLoading}
                 >
-                  Зарегистрироваться
+                  {isLoading ? (
+                    <span className="flex items-center gap-2">
+                      <span className="animate-spin">⏳</span> 
+                      Вход...
+                    </span>
+                  ) : (
+                    <span className="flex items-center gap-2">
+                      <LogIn className="w-4 h-4" /> 
+                      Войти
+                    </span>
+                  )}
                 </Button>
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+                <div className="text-center text-sm text-gray-600">
+                  <p>
+                    Нет аккаунта?{' '}
+                    <Button 
+                      variant="link" 
+                      className="p-0 h-auto font-semibold text-primary"
+                      onClick={() => navigate('/register')}
+                    >
+                      Зарегистрироваться
+                    </Button>
+                  </p>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

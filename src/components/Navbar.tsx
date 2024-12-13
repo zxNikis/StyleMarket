@@ -1,13 +1,14 @@
 import React from 'react';
-import { ShoppingCart, Home, Grid } from "lucide-react";
+import { ShoppingCart, Home, Grid, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
 interface NavbarProps {
   cartItemsCount: number;
+  isLoggedIn?: boolean;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ cartItemsCount }) => {
+const Navbar: React.FC<NavbarProps> = ({ cartItemsCount, isLoggedIn = false }) => {
   return (
     <nav className="bg-white shadow-sm">
       <div className="container mx-auto px-4">
@@ -38,9 +39,12 @@ const Navbar: React.FC<NavbarProps> = ({ cartItemsCount }) => {
                 )}
               </Button>
             </Link>
-            <Button variant="outline" className="hidden md:inline-flex">
-              Войти
-            </Button>
+            <Link to="/login">
+              <Button variant="outline" className="hidden md:inline-flex items-center gap-2">
+                <LogIn className="w-4 h-4" />
+                {isLoggedIn ? 'Профиль' : 'Войти'}
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
